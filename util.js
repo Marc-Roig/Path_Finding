@@ -7,7 +7,7 @@ class Queue {
 	}
 
 	empty() {
-		return (this.elements.length > 0) ? false : true
+		return (this.elements.length == 0) ? true : false
 	}
 
 	put(x) {

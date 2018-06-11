@@ -34,6 +34,11 @@ class Cell {
 		return this
 	}
 
+	resetParent() {
+		this.parent = null
+		return this
+	}
+
 }
 
 function findNeighbours(grid, useDiagonals) {
