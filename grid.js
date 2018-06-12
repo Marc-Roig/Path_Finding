@@ -10,6 +10,7 @@ class Cell {
 		this.diagonalNeigh = []
 
 		this.valid = true
+		this.special = false
 		
 		return this
 	}
@@ -38,6 +39,55 @@ class Cell {
 		this.parent = null
 		return this
 	}
+
+}
+
+function drawGrid() {
+
+	const spaceBetSquareCol = width / grid[0].length
+	const spaceBetSquareRow = height / grid.length
+
+	push()
+
+	stroke(120)
+    strokeWeight(1)
+
+	for (let i = 0; i < grid.length; i++) {
+
+		const distRow = i * spaceBetSquareRow
+
+		for (let j = 0; j < grid[0].length; j++) {
+
+			const distCol = j * spaceBetSquareCol
+
+			if (grid[i][j].valid) fill(248, 194, 145)
+			else fill(231, 76, 60)
+			
+			if(grid[i][j].special) fill(39, 174, 96)
+
+			// drawArrow(3, 15, 15, 20, 180, distCol + spaceBetSquareCol/2, distRow - spaceBetSquareCol/2)
+
+			rect(distCol, distRow, spaceBetSquareCol, spaceBetSquareRow)
+			let current = grid[i][j]
+			let parent = current.parent
+
+			if(parent instanceof Cell && current.valid) {
+
+				let directionX = parent.x - current.x
+				let directionY = parent.y - current.y
+
+				if (directionX < 0)      drawSimpleArrow(10, 5, -90,  spaceBetSquareCol/2 + distCol, spaceBetSquareRow/2 + distRow)
+				else if (directionX > 0) drawSimpleArrow(10, 5,  90,  spaceBetSquareCol/2 + distCol, spaceBetSquareRow/2 + distRow)
+				else if (directionY < 0) drawSimpleArrow(10, 5,  0,   spaceBetSquareCol/2 + distCol, spaceBetSquareRow/2 + distRow)
+				else if (directionY > 0) drawSimpleArrow(10, 5,  180, spaceBetSquareCol/2 + distCol, spaceBetSquareRow/2 + distRow)
+
+			}
+
+		}
+
+	}
+
+	pop()
 
 }
 
@@ -82,5 +132,10 @@ function findNeighbours(grid, useDiagonals) {
 			}
 		}
 	}
+
+}
+
+function cost(fromNode, toNode) {
+
 
 }
