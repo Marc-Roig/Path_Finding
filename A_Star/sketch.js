@@ -3,10 +3,12 @@ let columns = 10
 
 let grid = new Array()
 
+let pathFinder
+
 function setup() {
 	
 	createCenteredCanvas()
-	frameRate(3)
+	frameRate(15)
 	
 	// grid = Array(rows).fill().map(() => Array(columns).fill().map(() => new Cell())) //Generate grid full of Cells
 
@@ -22,7 +24,8 @@ function setup() {
 
 	findNeighbours(grid, false)
 
-	breadth_first_search(grid, {x: 2, y: 2}, {x: 8, y: 8})
+	// breadth_first_search(grid, {x: 2, y: 2}, {x: 8, y: 8})
+	pathFinder = new AStarPathFinder(grid, grid[0][0], grid[9][9], false)
 }
 
 function draw() {
@@ -30,40 +33,12 @@ function draw() {
 	background('#0e0e0e')
 	drawFrame()
 
+	if (!pathFinder.finished) pathFinder.step()
+
 	drawGrid()
 
-	noLoop()
+	// noLoop()
 	fill(255)
-
-}
-
-function breadth_first_search(grid, start, goal) {
-
-	let frontier = new Queue()
-	frontier.put(grid[start.x][start.y])
-
-	grid[start.x][start.y].parent = 0
-	grid[start.x][start.y].special = true
-
-	while (!frontier.empty()) {
-
-		const current = frontier.get()
-
-		if (current.x == goal.x && current.y == goal.y) {
-
-			current.special = true
-			break
-		}
-
-		for (let next of current.neighbours) {
-			if (next.parent == null && next.valid) {
-				frontier.put(next)
-				next.parent = current
-			}
-		}
-
-	}
-
 
 }
 
@@ -80,7 +55,6 @@ function mousePressed() {
 				grid[i][j].resetParent()
 			}
 		}
-		breadth_first_search(grid, {x: 2, y: 2}, {x: 8, y: 8})	
 
 	}
 
