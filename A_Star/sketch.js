@@ -35,31 +35,57 @@ function draw() {
 
 	if (!pathFinder.finished) pathFinder.step()
 
-	drawGrid()
+	drawGrid(calcPath(pathFinder.lastCheckedNode))
 
 	// noLoop()
-	fill(255)
+	// fill(255)
 
 }
 
 function mousePressed() {
 
-	if (mouseX < width && mouseX > 0 && mouseY < height && mouseY > 0) {
-		let col = Math.floor(mouseX/width * grid[0].length)
-		let row = Math.floor(mouseY/height * grid.length)
+	// if (mouseX < width && mouseX > 0 && mouseY < height && mouseY > 0) {
+	// 	let col = Math.floor(mouseX/width * grid[0].length)
+	// 	let row = Math.floor(mouseY/height * grid.length)
 
-		grid[row][col].valid = !grid[row][col].valid
+	// 	grid[row][col].valid = !grid[row][col].valid
 
-		for (let i = 0; i < grid.length; i++) {
-			for (let j = 0; j < grid[0].length; j++ ){
-				grid[i][j].resetParent()
-			}
-		}
+	// 	for (let i = 0; i < grid.length; i++) {
+	// 		for (let j = 0; j < grid[0].length; j++ ){
+	// 			grid[i][j].resetParent()
+	// 		}
+	// 	}
 
-	}
+	// }
 
 
 }
+
+function calcPath(endNode) {
+
+    // Find the path by working backwards
+    path = [];
+    var temp = endNode;
+    path.push(temp);
+    while (temp.parent != null) {
+        path.push(temp.parent);
+        temp = temp.parent;
+    }
+
+    return path
+}
+
+// function drawPath(path) {
+//     // Drawing path as continuous line
+//     noFill();
+//     stroke(255, 0, 200);
+//     strokeWeight(gamemap.w / gamemap.cols / 2);
+//     beginShape();
+//     for (var i = 0; i < path.length; i++) {
+//         vertex(path[i].x + path[i].width / 2, path[i].y + path[i].height / 2);
+//     }
+//     endShape();
+// }
 
 function windowResized() {
   createCenteredCanvas()

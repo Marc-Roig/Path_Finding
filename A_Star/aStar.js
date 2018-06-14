@@ -10,17 +10,19 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 	this.goal = goal
 	this.allowDiagonals = allowDiagonals
 
+	this.lastCheckedNode = grid[start.x][start.y]
+
 	this.finished = false
 	this.blockedPath = false
 
 	this.closedSetClr = color(231, 76, 60)
-	this.frontierClr = color(52, 152, 219)
+	this.frontierClr = color(230, 126, 34)
 
 	//An educated guess of how far it is between two points
 	this.heuristic = function(a, b) {
 
 		let d
-		// console.log(a, b)
+
 		if (this.allowDiagonals) d = dist(a.x, a.y, b.x, b.y)
 		else d = abs(a.x - b.x) + abs(a.y - b.y)
 
@@ -45,17 +47,18 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 
 				if (this.frontier[i].f < this.frontier[bestFit].f) bestFit = i
 
-				// if (this.frontier[i].f == this.frontier[bestFit].f) {
+				if (this.frontier[i].f == this.frontier[bestFit].f) {
 
-				// 	//Chose the largest path
-				// 	if (this.frontier[i].g > this.frontier[bestFit].g) bestFit = i
+					//Chose the largest path
+					if (this.frontier[i].g > this.frontier[bestFit].g) bestFit = i
 
-				// }
+				}
 			}
 
 			let current = this.frontier[bestFit]
 
-			// this.lastCheckedNode = current
+			this.lastCheckedNode = current
+
 			this.frontier = this.frontier.filter(x => x != current) //Remove current from frontier
 			this.closedSet.push(current)
 			current.color = this.closedSetClr
@@ -69,30 +72,34 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 
 
 			for (let neighbour of current.neighbours) {
-				let tempG = current.g + this.heuristic(neighbour, current)
 
-				//Is this a better path?
-				if (!this.frontier.includes(neighbour)) {
+				if (!this.closedSet.includes(neighbour)) {
 
-					this.frontier.push(neighbour)
-					if (!this.closedSet.includes(neighbour))neighbour.color = this.frontierClr //To show on canvas
+					let tempG = current.g + this.heuristic(neighbour, current)
 
-				} else if (tempG >= neighbour.g) {
-					continue
+					//Is this a better path?
+					if (!this.frontier.includes(neighbour)) {
+
+						this.frontier.push(neighbour)
+						if (!this.closedSet.includes(neighbour))neighbour.color = this.frontierClr //To show on canvas
+
+					} else if (tempG >= neighbour.g) {
+						continue
+					}
+
+					neighbour.g = tempG
+					neighbour.h = this.heuristic(neighbour, this.goal)
+
+					neighbour.f = neighbour.g + neighbour.h
+					neighbour.parent = current
+
 				}
-
-				neighbour.g = tempG
-				neighbour.h = this.heuristic(neighbour, this.goal)
-
-				neighbour.f = neighbour.g + neighbour.h
-				neighbour.parent = current
-
 			}
 
 		} else {
 
 			this.blockedPath = true
-
+			console.log("blocked path!!")
 		}
 
 	}

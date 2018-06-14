@@ -14,8 +14,11 @@ class Cell {
 		this.diagonalNeigh = []
 
 		this.valid = true
+
+		if (random(1) < 0.1) this.valid = false
+
 		this.color = color(52, 73, 94)
-		this.special = false
+		// this.special = false
 		
 		return this
 	}
@@ -47,7 +50,7 @@ class Cell {
 
 }
 
-function drawGrid() {
+function drawGrid(path) {
 
 	const spaceBetSquareCol = width / grid[0].length
 	const spaceBetSquareRow = height / grid.length
@@ -65,7 +68,8 @@ function drawGrid() {
 
 			const distCol = j * spaceBetSquareCol
 
-			fill(grid[i][j].color)
+			if (grid[i][j].valid) fill(grid[i][j].color)
+			else fill(0)
 
 			rect(distCol, distRow, spaceBetSquareCol, spaceBetSquareRow)
 
@@ -73,6 +77,13 @@ function drawGrid() {
 
 	}
 
+	fill(142, 68, 173)
+
+	for (let cell of path) {
+
+		rect(cell.x*spaceBetSquareCol, cell.y*spaceBetSquareRow, spaceBetSquareCol, spaceBetSquareRow)
+
+	}
 	pop()
 
 }
