@@ -61,7 +61,7 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 
 			this.frontier = this.frontier.filter(x => x != current) //Remove current from frontier
 			this.closedSet.push(current)
-			current.color = this.closedSetClr
+			// current.color = this.closedSetClr
 
 			if (current == this.goal) {
 
@@ -81,7 +81,7 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 					if (!this.frontier.includes(neighbour)) {
 
 						this.frontier.push(neighbour)
-						if (!this.closedSet.includes(neighbour))neighbour.color = this.frontierClr //To show on canvas
+						// neighbour.color = this.frontierClr //To show on canvas
 
 					} else if (tempG >= neighbour.g) {
 						continue

@@ -15,7 +15,7 @@ class Cell {
 
 		this.valid = true
 
-		if (random(1) < 0.1) this.valid = false
+		if (random(1) < 0.3) this.valid = false
 
 		this.color = color(52, 73, 94)
 		// this.special = false
