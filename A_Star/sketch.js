@@ -1,5 +1,5 @@
-let rows = 10
-let columns = 10
+let rows = 20
+let columns = 20
 
 let grid = new Array()
 
@@ -8,7 +8,7 @@ let pathFinder
 function setup() {
 	
 	createCenteredCanvas()
-	frameRate(15)
+	frameRate(30)
 	
 	// grid = Array(rows).fill().map(() => Array(columns).fill().map(() => new Cell())) //Generate grid full of Cells
 
@@ -22,10 +22,11 @@ function setup() {
 
 	}
 
-	findNeighbours(grid, false)
+	grid[grid.length-1][grid[0].length-1].valid = true
+	findNeighbours(grid, true)
 
 	// breadth_first_search(grid, {x: 2, y: 2}, {x: 8, y: 8})
-	pathFinder = new AStarPathFinder(grid, grid[0][0], grid[9][9], false)
+	pathFinder = new AStarPathFinder(grid, grid[0][0], grid[grid.length-1][grid[0].length-1])
 }
 
 function draw() {

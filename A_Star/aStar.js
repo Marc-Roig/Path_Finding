@@ -1,4 +1,4 @@
-function AStarPathFinder(grid, start, goal, allowDiagonals) {
+function AStarPathFinder(grid, start, goal) {
 
 	this.grid = grid
 
@@ -8,7 +8,6 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 	this.closedSet = [] 
 	this.start = start
 	this.goal = goal
-	this.allowDiagonals = allowDiagonals
 
 	this.lastCheckedNode = grid[start.x][start.y]
 
@@ -20,13 +19,8 @@ function AStarPathFinder(grid, start, goal, allowDiagonals) {
 
 	//An educated guess of how far it is between two points
 	this.heuristic = function(a, b) {
-
-		let d
-
-		if (this.allowDiagonals) d = dist(a.x, a.y, b.x, b.y)
-		else d = abs(a.x - b.x) + abs(a.y - b.y)
-
-		return d
+		
+		return dist(a.x, a.y, b.x, b.y)
 
 	}
 
